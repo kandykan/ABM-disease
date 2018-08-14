@@ -1,0 +1,72 @@
+globals [ friends ]
+
+breed [ healthies healthy]
+breed [ immunes immune ]
+breed [ sicks sick ]
+breed [ doctors doctor ]
+
+to setup
+  clear-all
+  setup-turtles
+  make-friends
+end
+
+to setup-turtles
+  create-healthies healthy-people [ 
+    set shape "person"
+    set color blue
+    ]
+  create-sicks sick-people [
+    set shape "person"
+    set color green
+    ]
+  ask turtles [ setxy random-xcor random-ycor ]
+end
+
+to go
+  move
+  tick
+  do-plots
+end
+
+to make-friends
+  set friends 0
+ while [ count links < pairs ] [
+    ask one-of turtles [ create-link-with one-of other turtles ]
+    ]
+  ask turtles [
+    let t 0
+    let offset random number-of-people
+    while [ t < count turtles ] [
+      let i (t + offset)
+      if i >= number-of-people [ set i (i - number-of-people) ]
+      if (link i who) != nobody [
+        ask turtle i [ set color blue ]
+        set t count turtles
+        ]
+      set t ( t + 1 )
+      ]
+    ]
+  ask turtles with [ color = blue ] [
+    ask self [ set friends (friends + count my-links) ]
+  ]
+  ask turtles with [ color = white ] [
+    ask self [ set friends (friends + count my-links) ]
+  ]
+end
+
+to move
+  ask turtles [
+    right random 360
+    forward random 10
+  ]
+end
+
+to do-plots
+    set-current-plot "plot 1"
+    set-plot-pen-interval 1
+    set-current-plot-pen "friends"
+    histogram [ count my-links ] of turtles
+    set-current-plot-pen "friends' friends"
+    histogram [ count my-links ] of turtles with [ color = white ]
+end

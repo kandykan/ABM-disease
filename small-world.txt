@@ -1,0 +1,63 @@
+globals [
+  friends
+  pairs
+  ]
+
+to setup
+  clear-all
+  crt number-of-people [
+    set color green
+    setxy random-xcor random-ycor
+    ]
+  set friends 0
+  set pairs 0
+end
+
+to go
+  ask turtles [
+    let n who
+    let n1 0
+    let k1 random (k * 2)
+    let counter 0
+    while [ counter < k1 ] [
+      ifelse random-float 1 > beta [ set n1 (n + counter + 1) ][
+        set n1 (n + k1 + random (number-of-people - (2 * k1) - 1))
+      ]
+      if n1 >= number-of-people [ set n1 (n1 - number-of-people) ]
+      create-link-with turtle n1
+      set pairs (pairs + 1)
+      set counter (counter + 1)
+    ]
+  ]
+  ask turtles [
+    let t 0
+    let offset random number-of-people
+    while [ t < count turtles ] [
+      let i (t + offset)
+      if i >= number-of-people [ set i (i - number-of-people) ]
+      if (link i who) != nobody [
+        ask turtle i [ set color blue ]
+        set t count turtles
+        ]
+      set t ( t + 1 )
+      ]
+    ]
+  ask turtles with [ color = blue ] [
+    ask self [ set friends (friends + count my-links) ]
+  ]
+  tick
+  show pairs
+  show 2 * pairs / number-of-people
+  do-plots
+end
+
+to do-plots
+    set-current-plot "plot 1"
+    set-plot-pen-interval 1
+    set-current-plot-pen "friends"
+    ;;plot count links * 2 / count turtles
+    histogram [ count my-links ] of turtles
+    set-current-plot-pen "friends' friends"
+    ;;plot friends / count turtles
+    histogram [ count my-links ] of turtles with [ color = blue ]
+end
