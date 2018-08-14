@@ -1,6 +1,6 @@
 # Agent-Based Epidemic Models
 
-I wanted to make a model of how a infectious disease, such as the flu, spreads through a population. Using NetLogo, I made several *agent-based* models, meaning there can be many agents with different properties doing different things. In these models, each agent is a different person. The people are programmed to move around and come in contact with other people.
+In junior high school, I became interested in epidemiology. I wanted model how infectious diseases spread through a population. Using NetLogo, I made several agent-based models, in which there are many agents with different properties doing different things. In these models, each agent is a different person. The people are programmed to move around and come in contact with other people.
 
 ## SIR Model
 
